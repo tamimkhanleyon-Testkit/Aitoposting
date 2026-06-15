@@ -3,12 +3,14 @@ import { motion } from 'framer-motion'
 import { Bell, ChevronDown } from 'lucide-react'
 import Countdown from './Countdown'
 
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1]
+
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
   visible: (delay = 0) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1], delay },
+    transition: { duration: 0.7, ease: EASE, delay },
   }),
 }
 
