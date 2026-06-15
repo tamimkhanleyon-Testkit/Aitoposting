@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HeyMariner — Coming Soon | Your Maritime Companion</title>
+  <meta name="description" content="A smarter way for seafarers and maritime professionals to learn, stay informed and navigate with confidence." />
+  <meta name="keywords" content="maritime, seafarer, maritime learning, maritime safety, maritime AI, shipping, cadet, officer" />
+  <meta property="og:title" content="HeyMariner — Coming Soon" />
+  <meta property="og:description" content="A smarter way for seafarers and maritime professionals to learn, stay informed and navigate with confidence." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="theme-color" content="#06264D" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'><ellipse cx='18' cy='13' rx='7' ry='9' fill='%2312C7C0'/><path d='M11 20 Q14 30 18 28 Q22 30 25 20 Q22 24 18 22 Q14 24 11 20Z' fill='%2312C7C0'/><path d='M11 10 Q13 4 18 4 Q23 4 25 10' fill='%2306264D'/><path d='M8 32 Q12 29 16 32 Q20 35 24 32 Q28 29 30 32' stroke='%2354D7FF' stroke-width='1.5' fill='none'/></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #06264D;
+      --navy-light: #0D3A70;
+      --ocean: #0F5FAF;
+      --teal: #12C7C0;
+      --accent: #54D7FF;
+      --bg: #F7FAFC;
+      --sea: #EDF6FB;
+      --muted: #5C7088;
+      --card-shadow: 0 4px 24px rgba(6,38,77,0.08);
+      --card-hover: 0 16px 48px rgba(6,38,77,0.16);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter Tight', 'Inter', sans-serif;
+      background: var(--bg);
+      color: #0B1F33;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--sea); }
+    ::-webkit-scrollbar-thumb { background: var(--ocean); border-radius: 3px; }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    @keyframes wave  { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+    @keyframes pulse { 0%,100%{opacity:.7;transform:scale(1)} 50%{opacity:1;transform:scale(1.4)} }
+    @keyframes fadeUp{ from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes blink { 0%,100%{opacity:.9} 50%{opacity:.3} }
+    @keyframes routeDash {
+      0%   { stroke-dashoffset: 200; opacity: 0; }
+      15%  { opacity: 1; }
+      85%  { opacity: 1; }
+      100% { stroke-dashoffset: 0; opacity: 0; }
+    }
+    @keyframes spin  { to{transform:rotate(360deg)} }
+    @keyframes slideIn { from{opacity:0;transform:translateY(-16px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes beamRotate { to { transform: rotate(360deg); } }
+    @keyframes starBlink { 0%,100%{opacity:.2} 50%{opacity:.8} }
+    @keyframes shipDrift { 0%,100%{transform:translateX(0)} 50%{transform:translateX(22px)} }
+
+    .fade-up { opacity: 0; transform: translateY(28px); transition: opacity .65s cubic-bezier(.22,1,.36,1), transform .65s cubic-bezier(.22,1,.36,1); }
+    .fade-up.visible { opacity: 1; transform: none; }
+
+    /* ─── GRADIENT TEXT ─── */
+    .gradient-text {
+      background: linear-gradient(135deg, #06264D 0%, #0F5FAF 50%, #12C7C0 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .gradient-text-teal {
+      background: linear-gradient(135deg, #12C7C0 0%, #54D7FF 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    /* ─── GLASS ─── */
+    .glass {
+      background: rgba(255,255,255,.15);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,.22);
+    }
+
+    /* ─── HEADER ─── */
+    #header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 72px; display: flex; align-items: center;
+      transition: background .3s, border-color .3s, box-shadow .3s;
+    }
+    #header.scrolled {
+      background: rgba(255,255,255,.85); backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(6,38,77,.06); box-shadow: 0 1px 12px rgba(6,38,77,.05);
+    }
+    .header-inner {
+      max-width: 1280px; margin: 0 auto; padding: 0 24px;
+      width: 100%; display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo { display: flex; align-items: center; gap: 2px; text-decoration: none; }
+    .logo-text { font-weight: 700; font-size: 1.15rem; color: var(--navy); letter-spacing: -.02em; }
+    .logo-icon { width: 34px; height: 34px; }
+    nav { display: flex; gap: 32px; }
+    nav a { text-decoration: none; color: var(--muted); font-size: .875rem; font-weight: 500; transition: color .2s; }
+    nav a:hover { color: var(--navy); }
+    .btn-notify {
+      background: var(--navy); color: white; font-weight: 600; font-size: .875rem;
+      padding: 10px 20px; border-radius: 999px; border: none; cursor: pointer;
+      transition: background .2s, transform .15s, box-shadow .2s; text-decoration: none; display: inline-block;
+    }
+    .btn-notify:hover { background: var(--navy-light); transform: scale(1.04); box-shadow: 0 6px 20px rgba(6,38,77,.25); }
+
+    /* Mobile menu */
+    .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 6px; color: var(--navy); }
+    .hamburger svg { display: block; }
+    #mobile-menu {
+      display: none; position: fixed; top: 72px; left: 0; right: 0; z-index: 90;
+      background: rgba(255,255,255,.97); backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(6,38,77,.08); padding: 12px 16px 20px;
+      animation: slideIn .2s ease;
+    }
+    #mobile-menu a {
+      display: block; padding: 12px 16px; color: #0B1F33; font-weight: 500; font-size: .9rem;
+      text-decoration: none; border-radius: 12px; transition: background .15s;
+    }
+    #mobile-menu a:hover { background: var(--sea); }
+    #mobile-menu .btn-notify { width: 100%; text-align: center; margin-top: 8px; }
+
+    @media (max-width: 767px) {
+      nav, .header-inner > .btn-notify { display: none; }
+      .hamburger { display: block; }
+    }
+
+    /* ─── HERO ─── */
+    #hero {
+      min-height: 100vh; padding-top: 72px;
+      background: linear-gradient(135deg, #F7FAFC 0%, #EDF6FB 55%, #DBEEFF 100%);
+      display: flex; align-items: center; position: relative; overflow: hidden;
+    }
+    .hero-particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .hero-particle {
+      position: absolute; border-radius: 50%;
+      background: rgba(18,199,192,.05); animation: float 5s ease-in-out infinite;
+    }
+    .hero-inner {
+      max-width: 1280px; margin: 0 auto; padding: 60px 24px 80px;
+      width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+    }
+    @media (max-width: 1023px) { .hero-inner { grid-template-columns: 1fr; } }
+
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.7); backdrop-filter: blur(12px);
+      border: 1px solid rgba(6,38,77,.08); border-radius: 999px;
+      padding: 6px 16px; margin-bottom: 24px;
+    }
+    .hero-dot { width: 8px; height: 8px; background: var(--teal); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+    .hero-eyebrow-text { font-size: .75rem; font-weight: 600; letter-spacing: .18em; color: var(--ocean); text-transform: uppercase; }
+
+    .hero-h1 { font-size: clamp(3rem,6vw,4.5rem); font-weight: 800; letter-spacing: -.04em; line-height: .95; margin-bottom: 16px; color: var(--navy); }
+    .hero-sub { font-size: 1.25rem; font-weight: 600; color: var(--ocean); margin-bottom: 16px; }
+    .hero-desc { font-size: 1rem; color: var(--muted); line-height: 1.7; margin-bottom: 32px; max-width: 420px; }
+
+    .countdown-label { font-size: .7rem; font-weight: 600; letter-spacing: .2em; color: var(--muted); text-transform: uppercase; margin-bottom: 12px; }
+    .countdown { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 32px; }
+    .cd-unit { display: flex; flex-direction: column; align-items: center; }
+    .cd-box {
+      background: white; border-radius: 14px; box-shadow: var(--card-shadow);
+      border: 1px solid rgba(6,38,77,.06); padding: 10px 16px; min-width: 60px; text-align: center;
+    }
+    .cd-num { font-size: 1.75rem; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; line-height: 1; }
+    .cd-sep { font-size: 1.75rem; font-weight: 300; color: var(--muted); margin-top: 8px; }
+    .cd-lbl { font-size: .65rem; color: var(--muted); font-weight: 500; letter-spacing: .1em; text-transform: uppercase; margin-top: 6px; }
+
+    .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 6px;
+      border: 2px solid rgba(6,38,77,.18); color: var(--navy); font-weight: 600; font-size: .875rem;
+      padding: 11px 20px; border-radius: 999px; background: rgba(255,255,255,.5); backdrop-filter: blur(8px);
+      cursor: pointer; transition: border-color .2s, transform .15s; text-decoration: none;
+    }
+    .btn-outline:hover { border-color: rgba(6,38,77,.4); transform: scale(1.03); }
+
+    /* Ship scene */
+    .ship-scene {
+      position: relative; border-radius: 24px; overflow: hidden;
+      min-height: 360px; background: linear-gradient(180deg,#e0f2fe 0%,#bae6fd 50%,#7dd3fc 100%);
+    }
+    .ship-wrap { position: absolute; bottom: 56px; left: 50%; transform: translateX(-50%); width: 90%; animation: float 5s ease-in-out infinite; }
+    .ship-ocean {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 72px; overflow: hidden;
+    }
+    .wave-layer { position: absolute; bottom: 0; height: 72px; width: 200%; animation: wave 10s linear infinite; }
+    .wave-layer-2 { animation-duration: 7s; opacity: .5; }
+    .ais-badge {
+      position: absolute; top: 12px; right: 12px;
+      background: rgba(255,255,255,.85); backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,.7); border-radius: 12px; padding: 8px 12px;
+    }
+    .ais-row { display: flex; align-items: center; gap: 6px; }
+    .ais-dot { width: 7px; height: 7px; background: var(--teal); border-radius: 50%; animation: blink 1.5s ease-in-out infinite; }
+    .ais-label { font-size: .6rem; font-family: 'Courier New', monospace; color: var(--navy); font-weight: 700; letter-spacing: .12em; }
+    .ais-coords { font-size: .55rem; font-family: 'Courier New', monospace; color: var(--muted); margin-top: 2px; }
+
+    .hero-badge {
+      position: absolute; background: white; border-radius: 16px; box-shadow: var(--card-shadow);
+      border: 1px solid rgba(6,38,77,.06); padding: 12px 16px;
+    }
+    .hero-badge-label { font-size: .7rem; color: var(--muted); font-weight: 500; }
+    .hero-badge-value { font-size: 1.2rem; font-weight: 700; color: var(--navy); margin: 2px 0; }
+    .hero-badge-sub { font-size: .65rem; font-weight: 600; }
+
+    .scroll-hint {
+      position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+    }
+    .scroll-hint-text { font-size: .65rem; letter-spacing: .15em; color: var(--muted); text-transform: uppercase; }
+    .scroll-mouse {
+      width: 20px; height: 32px; border: 2px solid rgba(92,112,136,.3); border-radius: 10px;
+      display: flex; justify-content: center; padding-top: 5px;
+    }
+    .scroll-dot { width: 4px; height: 8px; background: rgba(92,112,136,.5); border-radius: 2px; animation: float 1.5s ease-in-out infinite; }
+
+    /* ─── WAVE DIVIDER ─── */
+    .wave-divider { display: block; overflow: hidden; line-height: 0; }
+    .wave-divider svg { display: block; }
+
+    /* ─── FEATURES ─── */
+    #features { background: white; padding: 88px 24px; }
+    .section-inner { max-width: 1280px; margin: 0 auto; }
+    .section-header { text-align: center; margin-bottom: 64px; }
+    .eyebrow-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--sea); border-radius: 999px; padding: 6px 16px; margin-bottom: 16px;
+    }
+    .eyebrow-text { font-size: .7rem; font-weight: 600; letter-spacing: .18em; color: var(--ocean); text-transform: uppercase; }
+    .section-h2 { font-size: clamp(2rem,4vw,3rem); font-weight: 700; letter-spacing: -.03em; color: var(--navy); margin-bottom: 16px; line-height: 1.1; }
+    .section-p { font-size: 1.05rem; color: var(--muted); max-width: 540px; margin: 0 auto; line-height: 1.65; }
+
+    .features-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+    @media (max-width: 1023px) { .features-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 600px)  { .features-grid { grid-template-columns: 1fr; } }
+
+    .feature-card {
+      background: white; border-radius: 28px; padding: 28px;
+      border: 1px solid rgba(6,38,77,.06); box-shadow: var(--card-shadow);
+      transition: transform .25s, box-shadow .25s; cursor: default; position: relative; overflow: hidden;
+    }
+    .feature-card:hover { transform: translateY(-6px); box-shadow: var(--card-hover); }
+    .feature-card:hover .card-accent { opacity: 1; }
+    .card-accent {
+      position: absolute; bottom: 0; left: 24px; right: 24px; height: 2px;
+      border-radius: 1px; opacity: 0; transition: opacity .3s;
+    }
+    .icon-wrap {
+      width: 56px; height: 56px; border-radius: 16px;
+      display: flex; align-items: center; justify-content: center; margin-bottom: 20px;
+      transition: transform .3s;
+    }
+    .feature-card:hover .icon-wrap { transform: scale(1.1); }
+    .feature-card h3 { font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 10px; letter-spacing: -.01em; }
+    .feature-card p { font-size: .875rem; color: var(--muted); line-height: 1.6; }
+
+    /* ─── NETWORK ─── */
+    #network { background: var(--navy); padding: 88px 24px; position: relative; overflow: hidden; }
+    .network-bg-1 {
+      position: absolute; top: -80px; left: 25%; width: 380px; height: 380px;
+      background: rgba(15,95,175,.2); border-radius: 50%; filter: blur(80px); pointer-events: none;
+    }
+    .network-bg-2 {
+      position: absolute; bottom: -80px; right: 25%; width: 320px; height: 320px;
+      background: rgba(18,199,192,.1); border-radius: 50%; filter: blur(80px); pointer-events: none;
+    }
+    .network-header { text-align: center; margin-bottom: 48px; }
+    .network-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.1); border-radius: 999px; padding: 6px 16px; margin-bottom: 16px;
+    }
+    .network-pill-dot { width: 8px; height: 8px; background: var(--teal); border-radius: 50%; animation: pulse 2s infinite; }
+    .network-pill-text { font-size: .7rem; font-weight: 600; letter-spacing: .18em; color: var(--teal); text-transform: uppercase; }
+    .network-h2 { font-size: clamp(2rem,4vw,3rem); font-weight: 700; color: white; letter-spacing: -.03em; margin-bottom: 16px; line-height: 1.1; }
+    .network-p { font-size: 1rem; color: rgba(255,255,255,.6); max-width: 520px; margin: 0 auto; line-height: 1.65; }
+
+    .map-wrap { max-width: 720px; margin: 0 auto 56px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
+    @media (max-width: 767px) { .stats-grid { grid-template-columns: repeat(2,1fr); } }
+    .stat-card {
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 20px;
+      padding: 24px; text-align: center; backdrop-filter: blur(8px);
+      transition: background .2s;
+    }
+    .stat-card:hover { background: rgba(255,255,255,.08); }
+    .stat-num { font-size: 2rem; font-weight: 700; color: white; margin-bottom: 4px; font-variant-numeric: tabular-nums; }
+    .stat-lbl { font-size: .8rem; color: rgba(255,255,255,.5); font-weight: 500; letter-spacing: .05em; }
+
+    /* ─── WHY ─── */
+    #why { background: white; padding: 88px 24px; }
+    .why-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+    @media (max-width: 1023px) { .why-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 600px)  { .why-grid { grid-template-columns: 1fr; } }
+    .why-card {
+      background: white; border-radius: 24px; padding: 28px;
+      border: 1px solid rgba(6,38,77,.06); box-shadow: var(--card-shadow);
+      display: flex; gap: 16px; transition: transform .25s, box-shadow .25s; cursor: default;
+    }
+    .why-card:hover { transform: translateY(-4px); box-shadow: var(--card-hover); }
+    .why-icon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .why-card h3 { font-size: .95rem; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+    .why-card p { font-size: .82rem; color: var(--muted); line-height: 1.6; }
+
+    /* ─── JOIN ─── */
+    #join { background: white; padding: 88px 24px; }
+    .join-card {
+      max-width: 1280px; margin: 0 auto; border-radius: 28px;
+      min-height: 400px; position: relative; overflow: hidden; display: flex; align-items: center;
+    }
+
+    /* Lighthouse night scene */
+    .lh-sky {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, #1a3a6b 0%, #0d5fa8 45%, #0891b2 100%);
+    }
+    .lh-ocean { position: absolute; bottom: 0; left: 0; right: 0; height: 34%; background: linear-gradient(180deg,#0a4080,#06264D); }
+    .lh-moon { position: absolute; top: 24px; right: 64px; width: 40px; height: 40px; background: #fefce8; border-radius: 50%; box-shadow: 0 0 20px rgba(255,240,150,.4); }
+
+    .lh-body { position: absolute; bottom: 32%; right: 48px; }
+    .lh-light {
+      width: 20px; height: 20px; background: #fef9c3; border-radius: 50%; margin: 0 auto 2px;
+      box-shadow: 0 0 20px 8px rgba(255,240,150,.35);
+      animation: blink 2s ease-in-out infinite;
+    }
+    .lh-beam {
+      position: absolute; top: 0; left: 50%; width: 0; height: 0;
+      transform-origin: 0 0;
+      animation: beamRotate 4s linear infinite;
+    }
+    .lh-beam::after {
+      content: ''; position: absolute; left: 0; top: 0;
+      width: 120px; height: 120px;
+      background: conic-gradient(from 0deg, transparent 0deg, rgba(255,240,150,.1) 20deg, transparent 20deg);
+      transform-origin: 0 0;
+    }
+    .lh-lamp { width: 32px; height: 20px; background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.3); border-radius: 4px 4px 0 0; margin: 0 auto; }
+    .lh-tower {
+      width: 24px; height: 80px; background: rgba(255,255,255,.9); margin: 0 auto; border-radius: 2px;
+      clip-path: polygon(10% 0, 90% 0, 100% 100%, 0 100%);
+      position: relative;
+    }
+    .lh-stripe { position: absolute; left: 0; right: 0; height: 14px; background: rgba(220,38,38,.6); }
+    .lh-base  { width: 40px; height: 12px; background: rgba(255,255,255,.8); margin: 0 auto; border-radius: 2px; }
+    .lh-base2 { width: 56px; height: 8px;  background: rgba(255,255,255,.6); margin: 0 auto; border-radius: 2px; }
+
+    .lh-ship {
+      position: absolute; bottom: 38%; left: 48px; opacity: .5;
+      animation: shipDrift 20s ease-in-out infinite;
+    }
+    .lh-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(6,38,77,.35), transparent); }
+
+    /* Stars */
+    .lh-stars { position: absolute; inset: 0; pointer-events: none; }
+    .lh-star {
+      position: absolute; width: 2px; height: 2px; background: white; border-radius: 50%;
+      animation: starBlink var(--d, 3s) ease-in-out infinite; animation-delay: var(--dl, 0s);
+    }
+
+    /* Wave in ocean */
+    .lh-wave { position: absolute; bottom: 32%; left: 0; right: 0; height: 16px; overflow: hidden; opacity: .4; }
+    .lh-wave-inner { width: 200%; animation: wave 10s linear infinite; }
+
+    /* Content overlay */
+    .join-content { position: relative; z-index: 10; padding: 48px 40px; max-width: 520px; }
+    @media (max-width: 600px) { .join-content { padding: 40px 24px; } }
+    .join-eyebrow { font-size: .7rem; font-weight: 600; letter-spacing: .2em; color: var(--teal); text-transform: uppercase; margin-bottom: 10px; }
+    .join-h2 { font-size: clamp(1.6rem,3vw,2.25rem); font-weight: 700; color: white; margin-bottom: 12px; line-height: 1.2; }
+    .join-p { color: rgba(255,255,255,.7); font-size: .875rem; line-height: 1.65; margin-bottom: 28px; }
+
+    .join-form {
+      background: rgba(255,255,255,.15); backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,.22); border-radius: 18px; padding: 12px;
+      display: flex; gap: 8px; flex-wrap: wrap;
+    }
+    .join-input {
+      flex: 1; background: transparent; border: none; outline: none;
+      color: white; font-size: .875rem; padding: 8px 12px; min-width: 180px;
+      font-family: inherit;
+    }
+    .join-input::placeholder { color: rgba(255,255,255,.5); }
+    .join-btn {
+      background: white; color: var(--navy); font-weight: 600; font-size: .875rem;
+      padding: 10px 20px; border-radius: 12px; border: none; cursor: pointer;
+      display: flex; align-items: center; gap: 6px; white-space: nowrap;
+      transition: background .2s, transform .15s;
+    }
+    .join-btn:hover { background: var(--sea); transform: scale(1.02); }
+    .join-success {
+      display: none; background: rgba(255,255,255,.15); backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,.22); border-radius: 18px; padding: 20px 24px;
+      align-items: center; gap: 16px;
+    }
+    .join-success.show { display: flex; }
+    .success-icon { width: 40px; height: 40px; background: rgba(18,199,192,.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .success-title { color: white; font-weight: 600; font-size: .9rem; }
+    .success-sub { color: rgba(255,255,255,.6); font-size: .75rem; margin-top: 2px; }
+    .join-legal { color: rgba(255,255,255,.4); font-size: .7rem; margin-top: 12px; }
+
+    /* ─── FOOTER ─── */
+    footer { background: var(--navy); color: white; }
+    .footer-inner { max-width: 1280px; margin: 0 auto; padding: 64px 24px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px; }
+    @media (max-width: 900px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 500px)  { .footer-grid { grid-template-columns: 1fr; } }
+    .footer-brand { max-width: 280px; }
+    .footer-logo { display: flex; align-items: center; gap: 4px; margin-bottom: 16px; }
+    .footer-logo-text { font-weight: 700; font-size: 1.1rem; color: white; }
+    .footer-tagline { color: rgba(255,255,255,.45); font-size: .875rem; line-height: 1.6; margin-bottom: 24px; }
+    .socials { display: flex; gap: 10px; }
+    .social-btn {
+      width: 36px; height: 36px; background: rgba(255,255,255,.07); border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.1); display: flex; align-items: center; justify-content: center;
+      cursor: pointer; text-decoration: none; color: rgba(255,255,255,.6);
+      transition: background .2s, border-color .2s, color .2s;
+    }
+    .social-btn:hover { background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.2); color: white; }
+    .footer-col h4 { font-size: .7rem; font-weight: 600; letter-spacing: .2em; color: rgba(255,255,255,.35); text-transform: uppercase; margin-bottom: 20px; }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 12px; }
+    .footer-col a { color: rgba(255,255,255,.55); font-size: .875rem; text-decoration: none; transition: color .2s; }
+    .footer-col a:hover { color: white; }
+    .footer-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: gap; gap: 12px; padding-top: 28px; border-top: 1px solid rgba(255,255,255,.07); }
+    .footer-contact { display: flex; gap: 24px; flex-wrap: wrap; }
+    .footer-contact span { color: rgba(255,255,255,.35); font-size: .875rem; }
+    .footer-copy { color: rgba(255,255,255,.22); font-size: .75rem; }
+    .footer-teal-line { height: 3px; background: linear-gradient(90deg, transparent, var(--teal), transparent); opacity: .25; }
+  </style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<header id="header">
+  <div class="header-inner">
+    <a href="#" class="logo">
+      <span class="logo-text">Hey</span>
+      <svg class="logo-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="18" cy="13" rx="7" ry="9" fill="#12C7C0"/>
+        <path d="M11 20 Q14 30 18 28 Q22 30 25 20 Q22 24 18 22 Q14 24 11 20Z" fill="#12C7C0"/>
+        <path d="M13 28 Q11 34 9 33 Q12 36 15 32" fill="#0F5FAF" opacity=".7"/>
+        <path d="M23 28 Q25 34 27 33 Q24 36 21 32" fill="#0F5FAF" opacity=".7"/>
+        <path d="M11 10 Q13 4 18 4 Q23 4 25 10" fill="#06264D" opacity=".9"/>
+        <path d="M8 32 Q12 29 16 32 Q20 35 24 32 Q28 29 30 32" stroke="#54D7FF" stroke-width="1.5" fill="none" opacity=".8"/>
+      </svg>
+      <span class="logo-text">Mariner</span>
+    </a>
+
+    <nav>
+      <a href="#">Home</a>
+      <a href="#features">Features</a>
+      <a href="#network">Community</a>
+      <a href="#join">Contact</a>
+    </nav>
+
+    <a href="#join" class="btn-notify">Notify Me</a>
+    <button class="hamburger" id="hamburger-btn" aria-label="Menu">
+      <svg id="icon-menu" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+      <svg id="icon-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<div id="mobile-menu">
+  <a href="#" onclick="closeMobile()">Home</a>
+  <a href="#features" onclick="closeMobile()">Features</a>
+  <a href="#network" onclick="closeMobile()">Community</a>
+  <a href="#join" onclick="closeMobile()">Contact</a>
+  <a href="#join" class="btn-notify" onclick="closeMobile()">Notify Me</a>
+</div>
+
+<!-- ─── HERO ─── -->
+<section id="hero">
+  <div class="hero-particles">
+    <div class="hero-particle" style="width:160px;height:160px;left:8%;top:18%;animation-delay:0s;animation-duration:5s"></div>
+    <div class="hero-particle" style="width:200px;height:200px;left:22%;top:45%;animation-delay:.8s;animation-duration:6s"></div>
+    <div class="hero-particle" style="width:120px;height:120px;left:5%;top:65%;animation-delay:1.6s;animation-duration:4.5s"></div>
+    <div class="hero-particle" style="width:180px;height:180px;left:38%;top:12%;animation-delay:2.4s;animation-duration:5.5s"></div>
+  </div>
+
+  <div class="hero-inner">
+    <!-- Left content -->
+    <div class="fade-up" style="transition-delay:.05s">
+      <div class="hero-eyebrow">
+        <span class="hero-dot"></span>
+        <span class="hero-eyebrow-text">Setting Sail</span>
+      </div>
+      <h1 class="hero-h1">HEY<span class="gradient-text" style="display:block">MARINER</span></h1>
+      <p class="hero-sub">Your Maritime Companion</p>
+      <p class="hero-desc">A smarter way for seafarers and maritime professionals to learn, stay informed and navigate with confidence.</p>
+
+      <div class="countdown-label">Launching In</div>
+      <div class="countdown">
+        <div class="cd-unit"><div class="cd-box"><div class="cd-num" id="cd-days">00</div></div><div class="cd-lbl">Days</div></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-unit"><div class="cd-box"><div class="cd-num" id="cd-hours">00</div></div><div class="cd-lbl">Hours</div></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-unit"><div class="cd-box"><div class="cd-num" id="cd-mins">00</div></div><div class="cd-lbl">Mins</div></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-unit"><div class="cd-box"><div class="cd-num" id="cd-secs">00</div></div><div class="cd-lbl">Secs</div></div>
+      </div>
+
+      <div class="hero-ctas">
+        <a href="#join" class="btn-notify" style="display:inline-flex;align-items:center;gap:6px">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          Notify Me
+        </a>
+        <a href="#features" class="btn-outline">
+          Explore Features
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Right — Ship Scene -->
+    <div class="fade-up" style="transition-delay:.2s;position:relative">
+      <div class="ship-scene">
+
+        <!-- Sun glow -->
+        <div style="position:absolute;top:24px;right:48px;width:80px;height:80px;background:rgba(254,243,199,.7);border-radius:50%;filter:blur(24px)"></div>
+
+        <!-- Clouds -->
+        <div style="position:absolute;top:20px;left:24px">
+          <div style="width:112px;height:40px;background:rgba(255,255,255,.85);border-radius:999px;filter:blur(3px)"></div>
+          <div style="width:70px;height:32px;background:rgba(255,255,255,.75);border-radius:999px;filter:blur(3px);position:absolute;top:-14px;left:20px"></div>
+        </div>
+        <div style="position:absolute;top:40px;right:60px">
+          <div style="width:80px;height:30px;background:rgba(255,255,255,.65);border-radius:999px;filter:blur(3px)"></div>
+        </div>
+
+        <!-- Birds -->
+        <svg style="position:absolute;top:15%;left:20%;opacity:.55" width="44" height="12" viewBox="0 0 44 12" fill="none">
+          <path d="M0 6 Q4 0 8 6" stroke="#5C7088" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M8 6 Q12 0 16 6" stroke="#5C7088" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M24 6 Q28 0 32 6" stroke="#5C7088" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M32 6 Q36 0 40 6" stroke="#5C7088" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+
+        <!-- Ship -->
+        <div class="ship-wrap">
+          <svg viewBox="0 0 560 200" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;filter:drop-shadow(0 8px 24px rgba(6,38,77,.15))">
+            <path d="M30 130 L530 130 L510 160 L50 160 Z" fill="#06264D"/>
+            <path d="M50 160 L510 160 L490 175 L70 175 Z" fill="#041A38"/>
+            <rect x="55" y="110" width="440" height="22" fill="#0D3A70" rx="2"/>
+            <!-- Containers row 1 -->
+            <rect x="65"  y="78" width="52" height="32" fill="#E74C3C" rx="2"/>
+            <rect x="125" y="78" width="52" height="32" fill="#2ECC71" rx="2"/>
+            <rect x="185" y="78" width="52" height="32" fill="#F39C12" rx="2"/>
+            <rect x="245" y="78" width="52" height="32" fill="#3498DB" rx="2"/>
+            <rect x="305" y="78" width="52" height="32" fill="#9B59B6" rx="2"/>
+            <rect x="365" y="78" width="52" height="32" fill="#E67E22" rx="2"/>
+            <!-- Containers row 2 -->
+            <rect x="65"  y="46" width="52" height="32" fill="#3498DB" rx="2"/>
+            <rect x="125" y="46" width="52" height="32" fill="#E74C3C" rx="2"/>
+            <rect x="185" y="46" width="52" height="32" fill="#9B59B6" rx="2"/>
+            <rect x="245" y="46" width="52" height="32" fill="#2ECC71" rx="2"/>
+            <rect x="305" y="46" width="52" height="32" fill="#F39C12" rx="2"/>
+            <!-- Containers row 3 -->
+            <rect x="75"  y="14" width="52" height="32" fill="#E74C3C" rx="2"/>
+            <rect x="135" y="14" width="52" height="32" fill="#F39C12" rx="2"/>
+            <rect x="195" y="14" width="52" height="32" fill="#2ECC71" rx="2"/>
+            <!-- Dividers -->
+            <line x1="83" y1="78" x2="83" y2="110" stroke="rgba(0,0,0,.15)" stroke-width="1"/>
+            <line x1="143" y1="78" x2="143" y2="110" stroke="rgba(0,0,0,.15)" stroke-width="1"/>
+            <!-- Bridge -->
+            <rect x="390" y="30" width="90" height="80" fill="#F0F4F8" rx="3"/>
+            <rect x="398" y="20" width="74" height="18" fill="#E2E8F0" rx="2"/>
+            <!-- Bridge windows -->
+            <rect x="410" y="36" width="14" height="10" fill="#54D7FF" rx="1.5" opacity=".9"/>
+            <rect x="430" y="36" width="14" height="10" fill="#54D7FF" rx="1.5" opacity=".9"/>
+            <rect x="450" y="36" width="14" height="10" fill="#54D7FF" rx="1.5" opacity=".9"/>
+            <!-- Funnel -->
+            <rect x="428" y="-8" width="28" height="28" fill="#06264D" rx="4"/>
+            <!-- Nav lights -->
+            <circle cx="30" cy="128" r="3" fill="#E74C3C" opacity=".9">
+              <animate attributeName="opacity" values="0.9;0.3;0.9" dur="2s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="530" cy="128" r="3" fill="#2ECC71" opacity=".9">
+              <animate attributeName="opacity" values="0.9;0.3;0.9" dur="2s" begin="1s" repeatCount="indefinite"/>
+            </circle>
+          </svg>
+        </div>
+
+        <!-- Ocean waves -->
+        <div class="ship-ocean">
+          <div class="wave-layer" style="background:linear-gradient(180deg,#0F5FAF 0%,#06264D 100%);border-radius:40% 40% 0 0 / 10px 10px 0 0">
+            <svg viewBox="0 0 1440 56" style="width:50%;display:inline-block" preserveAspectRatio="none"><path d="M0,28 C240,56 480,0 720,28 C960,56 1200,0 1440,28 L1440,56 L0,56 Z" fill="#0F5FAF" opacity=".8"/></svg>
+            <svg viewBox="0 0 1440 56" style="width:50%;display:inline-block" preserveAspectRatio="none"><path d="M0,28 C240,56 480,0 720,28 C960,56 1200,0 1440,28 L1440,56 L0,56 Z" fill="#0F5FAF" opacity=".8"/></svg>
+          </div>
+          <div class="wave-layer wave-layer-2">
+            <svg viewBox="0 0 1440 48" style="width:50%;display:inline-block;position:absolute;top:0" preserveAspectRatio="none"><path d="M0,24 C180,48 360,0 540,24 C720,48 900,0 1080,24 C1260,48 1350,12 1440,24 L1440,48 L0,48 Z" fill="#54D7FF" opacity=".3"/></svg>
+          </div>
+        </div>
+
+        <!-- AIS badge -->
+        <div class="ais-badge">
+          <div class="ais-row"><div class="ais-dot"></div><span class="ais-label">AIS LIVE</span></div>
+          <div class="ais-coords">LAT 23.8° N &nbsp; LON 90.4° E</div>
+        </div>
+      </div>
+
+      <!-- Floating badges -->
+      <div class="hero-badge" style="bottom:-16px;left:-20px;animation:float 4s ease-in-out infinite">
+        <div class="hero-badge-label">Maritime Professionals</div>
+        <div class="hero-badge-value">50,000+</div>
+        <div class="hero-badge-sub" style="color:var(--teal)">Awaiting Launch</div>
+      </div>
+      <div class="hero-badge" style="top:-16px;right:-16px;animation:float 5s ease-in-out infinite 1s">
+        <div class="hero-badge-label">Global Coverage</div>
+        <div class="hero-badge-value">100+</div>
+        <div class="hero-badge-sub" style="color:var(--ocean)">Countries</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll hint -->
+  <div class="scroll-hint">
+    <span class="scroll-hint-text">Scroll</span>
+    <div class="scroll-mouse"><div class="scroll-dot"></div></div>
+  </div>
+</section>
+
+<!-- Wave divider -->
+<div class="wave-divider" style="background:white;margin-top:-1px">
+  <svg viewBox="0 0 1440 56" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="width:100%;height:56px;display:block;background:linear-gradient(135deg,#F7FAFC,#EDF6FB,#DBEEFF)">
+    <path d="M0,32 C360,56 720,8 1080,32 C1260,44 1380,48 1440,32 L1440,56 L0,56 Z" fill="white"/>
+  </svg>
+</div>
+
+<!-- ─── FEATURES ─── -->
+<section id="features">
+  <div class="section-inner">
+    <div class="section-header fade-up">
+      <div class="eyebrow-pill"><span class="eyebrow-text">Built For Mariners</span></div>
+      <h2 class="section-h2">Everything You Need<span class="gradient-text" style="display:block">In One Place</span></h2>
+      <p class="section-p">HeyMariner brings maritime knowledge, safety, regulations, and AI together into one intelligent platform designed for life at sea.</p>
+    </div>
+
+    <div class="features-grid">
+
+      <div class="feature-card fade-up" style="transition-delay:.05s">
+        <div class="icon-wrap" style="background:#EFF6FF">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="1.8"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6H4a2 2 0 0 0-2 2v10c0 1.1.9 2 2 2h2"/></svg>
+        </div>
+        <h3>Maritime News</h3>
+        <p>Real-time global shipping news, port updates, maritime incidents, and industry developments curated daily by specialists.</p>
+        <div class="card-accent" style="background:linear-gradient(90deg,#3B82F6,#0F5FAF)"></div>
+      </div>
+
+      <div class="feature-card fade-up" style="transition-delay:.1s">
+        <div class="icon-wrap" style="background:#ECFDF5">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Safety First</h3>
+        <p>Near-miss reports, accident analysis, safety bulletins, and best-practice alerts from international maritime authorities.</p>
+        <div class="card-accent" style="background:linear-gradient(90deg,#10B981,#12C7C0)"></div>
+      </div>
+
+      <div class="feature-card fade-up" style="transition-delay:.15s">
+        <div class="icon-wrap" style="background:#F5F3FF">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="1.8"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <h3>Learning Hub</h3>
+        <p>Structured resources covering COLREGs, ECDIS, Radar, BRM, Cargo Ops, Ship Stability, GMDSS, and Marine Engineering.</p>
+        <div class="card-accent" style="background:linear-gradient(90deg,#8B5CF6,#7C3AED)"></div>
+      </div>
+
+      <div class="feature-card fade-up" style="transition-delay:.2s">
+        <div class="icon-wrap" style="background:#FFFBEB">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        </div>
+        <h3>Regulations</h3>
+        <p>Latest updates from IMO, ILO, ICS, BIMCO, flag states and port authorities — simplified and always current.</p>
+        <div class="card-accent" style="background:linear-gradient(90deg,#F59E0B,#EF4444)"></div>
+      </div>
+
+      <div class="feature-card fade-up" style="transition-delay:.25s">
+        <div class="icon-wrap" style="background:#F0FDFA">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#12C7C0" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <h3>AI Assistant</h3>
+        <p>An intelligent maritime AI trained on regulations, procedures, and technical knowledge — available 24/7 on any device.</p>
+        <div class="card-accent" style="background:linear-gradient(90deg,#12C7C0,#54D7FF)"></div>
+      </div>
+
+      <div class="feature-card fade-up" style="transition-delay:.3s">
+        <div class="icon-wrap" style="background:#FFF1F2">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F43F5E" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3>Community</h3>
+        <p>A global professional network connecting seafarers, cadets, officers, engineers, and maritime professionals worldwide.</p>
+        <div class="card-accent" style="background:linear-gradient(90deg,#F43F5E,#EC4899)"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Wave divider -->
+<div class="wave-divider" style="background:var(--navy)">
+  <svg viewBox="0 0 1440 56" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="width:100%;height:56px;display:block;background:white">
+    <path d="M0,8 C360,56 720,0 1080,32 C1260,48 1380,56 1440,40 L1440,56 L0,56 Z" fill="var(--navy)"/>
+  </svg>
+</div>
+
+<!-- ─── NETWORK ─── -->
+<section id="network">
+  <div class="network-bg-1"></div>
+  <div class="network-bg-2"></div>
+  <div class="section-inner" style="position:relative;z-index:1">
+    <div class="network-header fade-up">
+      <div class="network-pill"><span class="network-pill-dot"></span><span class="network-pill-text">Global Reach</span></div>
+      <h2 class="network-h2">One Global<span class="gradient-text-teal" style="display:block">Community</span></h2>
+      <p class="network-p">Connecting maritime professionals around the world — from every flag state, every rank, and every ocean.</p>
+    </div>
+
+    <div class="map-wrap fade-up" style="transition-delay:.15s">
+      <svg viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg" style="width:100%" aria-label="Global maritime network map">
+        <rect width="600" height="260" fill="rgba(15,95,175,.08)" rx="16"/>
+        <!-- Grid -->
+        <line x1="0" y1="65"  x2="600" y2="65"  stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+        <line x1="0" y1="130" x2="600" y2="130" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+        <line x1="0" y1="195" x2="600" y2="195" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+        <line x1="100" y1="0" x2="100" y2="260" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+        <line x1="200" y1="0" x2="200" y2="260" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+        <line x1="300" y1="0" x2="300" y2="260" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+        <line x1="400" y1="0" x2="400" y2="260" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+        <line x1="500" y1="0" x2="500" y2="260" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+        <!-- Continents -->
+        <path d="M 160,80 L 185,70 L 200,80 L 215,75 L 210,90 L 215,105 L 205,120 L 195,130 L 185,145 L 175,140 L 165,130 L 160,115 L 150,110 L 148,95 Z" fill="rgba(84,215,255,.15)" stroke="rgba(84,215,255,.25)" stroke-width=".8"/>
+        <path d="M 175,150 L 188,148 L 195,160 L 200,175 L 198,195 L 190,215 L 180,225 L 170,215 L 165,195 L 163,175 L 168,160 Z" fill="rgba(84,215,255,.15)" stroke="rgba(84,215,255,.25)" stroke-width=".8"/>
+        <path d="M 278,65 L 295,58 L 308,65 L 315,72 L 310,82 L 300,88 L 288,85 L 280,78 Z" fill="rgba(84,215,255,.15)" stroke="rgba(84,215,255,.25)" stroke-width=".8"/>
+        <path d="M 282,100 L 300,96 L 318,100 L 325,115 L 328,135 L 322,155 L 310,170 L 295,175 L 280,168 L 270,150 L 268,130 L 272,112 Z" fill="rgba(84,215,255,.15)" stroke="rgba(84,215,255,.25)" stroke-width=".8"/>
+        <path d="M 320,60 L 360,50 L 400,55 L 430,65 L 445,78 L 440,92 L 420,100 L 400,108 L 380,105 L 355,100 L 335,95 L 318,85 L 315,72 Z" fill="rgba(84,215,255,.15)" stroke="rgba(84,215,255,.25)" stroke-width=".8"/>
+        <path d="M 390,160 L 420,155 L 440,162 L 448,178 L 442,195 L 425,200 L 405,198 L 392,185 L 388,172 Z" fill="rgba(84,215,255,.15)" stroke="rgba(84,215,255,.25)" stroke-width=".8"/>
+        <!-- Routes (animated dashes) -->
+        <path d="M 162 100 Q 226 40 290 72" fill="none" stroke="rgba(84,215,255,.1)" stroke-width="1"/>
+        <path d="M 162 100 Q 226 40 290 72" fill="none" stroke="#54D7FF" stroke-width="1.5" stroke-dasharray="8 6" style="animation:routeDash 3.5s ease-in-out infinite;animation-delay:0s"/>
+        <path d="M 290 72 Q 315 60 340 80" fill="none" stroke="rgba(84,215,255,.1)" stroke-width="1"/>
+        <path d="M 290 72 Q 315 60 340 80" fill="none" stroke="#54D7FF" stroke-width="1.5" stroke-dasharray="8 6" style="animation:routeDash 3s ease-in-out infinite;animation-delay:.6s"/>
+        <path d="M 340 80 Q 390 65 410 78" fill="none" stroke="rgba(84,215,255,.1)" stroke-width="1"/>
+        <path d="M 340 80 Q 390 65 410 78" fill="none" stroke="#54D7FF" stroke-width="1.5" stroke-dasharray="8 6" style="animation:routeDash 4s ease-in-out infinite;animation-delay:1.2s"/>
+        <path d="M 410 78 Q 430 120 408 162" fill="none" stroke="rgba(84,215,255,.1)" stroke-width="1"/>
+        <path d="M 410 78 Q 430 120 408 162" fill="none" stroke="#54D7FF" stroke-width="1.5" stroke-dasharray="8 6" style="animation:routeDash 3.8s ease-in-out infinite;animation-delay:1.8s"/>
+        <path d="M 290 110 Q 295 145 300 155" fill="none" stroke="rgba(84,215,255,.1)" stroke-width="1"/>
+        <path d="M 290 110 Q 295 145 300 155" fill="none" stroke="#54D7FF" stroke-width="1.5" stroke-dasharray="8 6" style="animation:routeDash 3.2s ease-in-out infinite;animation-delay:2.4s"/>
+        <!-- Port dots -->
+        <circle cx="162" cy="100" r="6" fill="rgba(18,199,192,.15)" style="animation:pulse 2s ease-in-out infinite"/>
+        <circle cx="162" cy="100" r="2.5" fill="#12C7C0" opacity=".9"/>
+        <circle cx="162" cy="100" r="1.2" fill="white"/>
+        <circle cx="290" cy="72"  r="6" fill="rgba(18,199,192,.15)" style="animation:pulse 2.3s ease-in-out infinite;animation-delay:.3s"/>
+        <circle cx="290" cy="72"  r="2.5" fill="#12C7C0" opacity=".9"/>
+        <circle cx="290" cy="72"  r="1.2" fill="white"/>
+        <circle cx="340" cy="80"  r="6" fill="rgba(18,199,192,.15)" style="animation:pulse 2.6s ease-in-out infinite;animation-delay:.6s"/>
+        <circle cx="340" cy="80"  r="2.5" fill="#12C7C0" opacity=".9"/>
+        <circle cx="340" cy="80"  r="1.2" fill="white"/>
+        <circle cx="410" cy="78"  r="6" fill="rgba(18,199,192,.15)" style="animation:pulse 2s ease-in-out infinite;animation-delay:.9s"/>
+        <circle cx="410" cy="78"  r="2.5" fill="#12C7C0" opacity=".9"/>
+        <circle cx="410" cy="78"  r="1.2" fill="white"/>
+        <circle cx="408" cy="162" r="6" fill="rgba(18,199,192,.15)" style="animation:pulse 2.5s ease-in-out infinite;animation-delay:1.2s"/>
+        <circle cx="408" cy="162" r="2.5" fill="#12C7C0" opacity=".9"/>
+        <circle cx="408" cy="162" r="1.2" fill="white"/>
+        <circle cx="290" cy="110" r="6" fill="rgba(18,199,192,.15)" style="animation:pulse 2.2s ease-in-out infinite;animation-delay:1.5s"/>
+        <circle cx="290" cy="110" r="2.5" fill="#12C7C0" opacity=".9"/>
+        <circle cx="290" cy="110" r="1.2" fill="white"/>
+        <circle cx="180" cy="155" r="6" fill="rgba(18,199,192,.15)" style="animation:pulse 2.4s ease-in-out infinite;animation-delay:1.8s"/>
+        <circle cx="180" cy="155" r="2.5" fill="#12C7C0" opacity=".9"/>
+        <circle cx="180" cy="155" r="1.2" fill="white"/>
+      </svg>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card fade-up" style="transition-delay:.05s"><div class="stat-num" data-target="100" data-suffix="+">0+</div><div class="stat-lbl">Countries</div></div>
+      <div class="stat-card fade-up" style="transition-delay:.1s"><div class="stat-num" data-target="10000" data-suffix="+">0+</div><div class="stat-lbl">Mariners</div></div>
+      <div class="stat-card fade-up" style="transition-delay:.15s"><div class="stat-num" data-target="500" data-suffix="+">0+</div><div class="stat-lbl">Resources</div></div>
+      <div class="stat-card fade-up" style="transition-delay:.2s"><div class="stat-num" data-target="24" data-suffix="/7">0/7</div><div class="stat-lbl">Support</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Wave divider -->
+<div class="wave-divider" style="background:white">
+  <svg viewBox="0 0 1440 56" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="width:100%;height:56px;display:block;background:var(--navy)">
+    <path d="M0,32 C360,8 720,56 1080,24 C1260,8 1380,4 1440,16 L1440,56 L0,56 Z" fill="white"/>
+  </svg>
+</div>
+
+<!-- ─── WHY ─── -->
+<section id="why">
+  <div class="section-inner">
+    <div class="section-header fade-up">
+      <div class="eyebrow-pill"><span class="eyebrow-text">The HeyMariner Advantage</span></div>
+      <h2 class="section-h2">Why Choose<span class="gradient-text" style="display:block">HeyMariner?</span></h2>
+      <p class="section-p">Purpose-built for the unique needs of maritime professionals, not adapted from a generic platform.</p>
+    </div>
+
+    <div class="why-grid">
+
+      <div class="why-card fade-up" style="transition-delay:.05s">
+        <div class="why-icon" style="background:#EFF6FF">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <div>
+          <h3>Maritime-Specific</h3>
+          <p>Built exclusively for seafarers and maritime professionals — not a generic platform. Every feature serves life at sea.</p>
+        </div>
+      </div>
+
+      <div class="why-card fade-up" style="transition-delay:.1s">
+        <div class="why-icon" style="background:#ECFDF5">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div>
+          <h3>Always Up to Date</h3>
+          <p>Regulations, news and safety alerts updated in real time — so you always have the most current information at hand.</p>
+        </div>
+      </div>
+
+      <div class="why-card fade-up" style="transition-delay:.15s">
+        <div class="why-icon" style="background:#F5F3FF">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="1.8"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <div>
+          <h3>All In One Platform</h3>
+          <p>News, learning, regulations, safety, AI support and community — no more switching between a dozen different apps.</p>
+        </div>
+      </div>
+
+      <div class="why-card fade-up" style="transition-delay:.2s">
+        <div class="why-icon" style="background:#FFFBEB">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div>
+          <h3>Expert Community</h3>
+          <p>Connect with fellow mariners, share experiences, get advice from peers who truly understand the maritime world.</p>
+        </div>
+      </div>
+
+      <div class="why-card fade-up" style="transition-delay:.25s">
+        <div class="why-icon" style="background:#F0FDFA">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#12C7C0" stroke-width="1.8"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+        </div>
+        <div>
+          <h3>Works Everywhere</h3>
+          <p>Designed for low-bandwidth environments at sea. Fast, offline-capable and optimised for satellite connections.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── JOIN ─── -->
+<section id="join" style="background:white;padding:88px 24px">
+  <div style="max-width:1280px;margin:0 auto">
+    <div class="join-card fade-up">
+
+      <!-- Night scene background -->
+      <div class="lh-sky"></div>
+
+      <!-- Stars -->
+      <div class="lh-stars">
+        <div class="lh-star" style="left:5%;top:8%;--d:2.5s;--dl:0s;opacity:.5"></div>
+        <div class="lh-star" style="left:12%;top:15%;--d:3.5s;--dl:.4s;opacity:.7"></div>
+        <div class="lh-star" style="left:20%;top:6%;--d:2s;--dl:.8s;opacity:.4"></div>
+        <div class="lh-star" style="left:30%;top:18%;--d:4s;--dl:1.2s;opacity:.6"></div>
+        <div class="lh-star" style="left:40%;top:10%;--d:3s;--dl:.3s;opacity:.5"></div>
+        <div class="lh-star" style="left:55%;top:7%;--d:2.8s;--dl:.7s;opacity:.7"></div>
+        <div class="lh-star" style="left:65%;top:15%;--d:3.2s;--dl:1s;opacity:.4"></div>
+        <div class="lh-star" style="left:75%;top:5%;--d:2.2s;--dl:.5s;opacity:.6"></div>
+        <div class="lh-star" style="left:82%;top:12%;--d:3.8s;--dl:.2s;opacity:.5"></div>
+        <div class="lh-star" style="left:90%;top:9%;--d:2.6s;--dl:.9s;opacity:.7"></div>
+        <div class="lh-star" style="left:48%;top:3%;--d:3.4s;--dl:1.4s;opacity:.4"></div>
+        <div class="lh-star" style="left:70%;top:20%;--d:2.4s;--dl:.6s;opacity:.6"></div>
+      </div>
+
+      <div class="lh-ocean"></div>
+      <div class="lh-moon"></div>
+      <div class="lh-wave"><div class="lh-wave-inner">
+        <svg viewBox="0 0 1440 16" style="width:50%;display:inline-block" preserveAspectRatio="none"><path d="M0,8 C240,16 480,0 720,8 C960,16 1200,0 1440,8" stroke="rgba(84,215,255,.6)" stroke-width="2" fill="none"/></svg>
+        <svg viewBox="0 0 1440 16" style="width:50%;display:inline-block" preserveAspectRatio="none"><path d="M0,8 C240,16 480,0 720,8 C960,16 1200,0 1440,8" stroke="rgba(84,215,255,.6)" stroke-width="2" fill="none"/></svg>
+      </div></div>
+
+      <!-- Distant ship -->
+      <div class="lh-ship">
+        <svg viewBox="0 0 60 24" width="56" height="22" fill="none">
+          <path d="M5 16 L55 16 L52 20 L8 20 Z" fill="rgba(6,38,77,.8)"/>
+          <rect x="22" y="8" width="20" height="8" fill="rgba(6,38,77,.7)" rx="1"/>
+          <rect x="28" y="4" width="12" height="6" fill="rgba(6,38,77,.6)" rx="1"/>
+        </svg>
+      </div>
+
+      <!-- Lighthouse -->
+      <div class="lh-body">
+        <div style="position:relative">
+          <div class="lh-beam"></div>
+          <div class="lh-light"></div>
+        </div>
+        <div class="lh-lamp"></div>
+        <div class="lh-tower">
+          <div class="lh-stripe" style="top:16px"></div>
+          <div class="lh-stripe" style="top:42px"></div>
+        </div>
+        <div class="lh-base"></div>
+        <div class="lh-base2"></div>
+      </div>
+
+      <div class="lh-overlay"></div>
+
+      <!-- Content -->
+      <div class="join-content">
+        <div class="join-eyebrow">⚓ Join The Crew</div>
+        <h2 class="join-h2">Join our crew and get<br>notified at launch</h2>
+        <p class="join-p">Be first to access HeyMariner — receive early access invitations, feature announcements, and your launch alert.</p>
+
+        <form class="join-form" id="join-form" onsubmit="handleJoin(event)">
+          <input type="email" class="join-input" id="join-email" placeholder="Enter your email address" required />
+          <button type="submit" class="join-btn" id="join-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Notify Me
+          </button>
+        </form>
+
+        <div class="join-success" id="join-success">
+          <div class="success-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#12C7C0" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div>
+            <div class="success-title">You're on the list!</div>
+            <div class="success-sub">Fair winds and following seas — we'll notify you at launch.</div>
+          </div>
+        </div>
+
+        <p class="join-legal">No spam. Unsubscribe anytime.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <span class="footer-logo-text">Hey</span>
+          <svg width="22" height="22" viewBox="0 0 36 36" fill="none">
+            <ellipse cx="18" cy="13" rx="7" ry="9" fill="#12C7C0"/>
+            <path d="M11 20 Q14 30 18 28 Q22 30 25 20 Q22 24 18 22 Q14 24 11 20Z" fill="#12C7C0"/>
+            <path d="M11 10 Q13 4 18 4 Q23 4 25 10" fill="rgba(255,255,255,.15)"/>
+          </svg>
+          <span class="footer-logo-text">Mariner</span>
+        </div>
+        <p class="footer-tagline">A new generation maritime intelligence platform for seafarers, cadets, officers, and industry professionals worldwide.</p>
+        <div class="socials">
+          <a href="#" class="social-btn" aria-label="Facebook">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="LinkedIn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="X / Twitter">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="YouTube">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.97C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.57A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.45a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#network">Community</a></li>
+          <li><a href="#join">Early Access</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Maritime News</a></li>
+          <li><a href="#">Safety Center</a></li>
+          <li><a href="#">Learning Academy</a></li>
+          <li><a href="#">Regulations</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms &amp; Conditions</a></li>
+          <li><a href="#">Cookie Policy</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-contact">
+        <span>🌐 heymariner.com</span>
+        <span>📧 contact@heymariner.com</span>
+      </div>
+      <p class="footer-copy">© <span id="yr"></span> HeyMariner. All rights reserved.</p>
+    </div>
+  </div>
+  <div class="footer-teal-line"></div>
+</footer>
+
+<script>
+  /* ── Header scroll ── */
+  const header = document.getElementById('header');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 20);
+  }, { passive: true });
+
+  /* ── Mobile menu ── */
+  const hamburger = document.getElementById('hamburger-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const iconMenu = document.getElementById('icon-menu');
+  const iconClose = document.getElementById('icon-close');
+  let menuOpen = false;
+
+  hamburger.addEventListener('click', () => {
+    menuOpen = !menuOpen;
+    mobileMenu.style.display = menuOpen ? 'block' : 'none';
+    iconMenu.style.display = menuOpen ? 'none' : 'block';
+    iconClose.style.display = menuOpen ? 'block' : 'none';
+  });
+
+  function closeMobile() {
+    menuOpen = false;
+    mobileMenu.style.display = 'none';
+    iconMenu.style.display = 'block';
+    iconClose.style.display = 'none';
+  }
+
+  /* ── Countdown ── */
+  function updateCountdown() {
+    const target = new Date('2026-09-01T00:00:00Z').getTime();
+    const diff = Math.max(target - Date.now(), 0);
+    const days  = Math.floor(diff / 864e5);
+    const hours = Math.floor((diff % 864e5) / 36e5);
+    const mins  = Math.floor((diff % 36e5) / 6e4);
+    const secs  = Math.floor((diff % 6e4) / 1e3);
+    const pad = n => String(n).padStart(2,'0');
+    document.getElementById('cd-days').textContent  = pad(days);
+    document.getElementById('cd-hours').textContent = pad(hours);
+    document.getElementById('cd-mins').textContent  = pad(mins);
+    document.getElementById('cd-secs').textContent  = pad(secs);
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  /* ── Footer year ── */
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  /* ── Scroll animations ── */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '-40px 0px' });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  /* ── Animated counters ── */
+  const counterObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const target = +el.dataset.target;
+      const suffix = el.dataset.suffix || '';
+      const duration = 1800;
+      const start = Date.now();
+      const tick = () => {
+        const elapsed = Date.now() - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const ease = 1 - Math.pow(1 - progress, 3);
+        const value = Math.floor(ease * target);
+        el.textContent = (target >= 1000 ? value.toLocaleString() : value) + suffix;
+        if (progress < 1) requestAnimationFrame(tick);
+        else el.textContent = (target >= 1000 ? target.toLocaleString() : target) + suffix;
+      };
+      requestAnimationFrame(tick);
+      counterObs.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('[data-target]').forEach(el => counterObs.observe(el));
+
+  /* ── Join form ── */
+  function handleJoin(e) {
+    e.preventDefault();
+    const btn = document.getElementById('join-btn');
+    btn.innerHTML = '<div style="width:16px;height:16px;border:2px solid rgba(6,38,77,.3);border-top-color:var(--navy);border-radius:50%;animation:spin .7s linear infinite"></div>';
+    setTimeout(() => {
+      document.getElementById('join-form').style.display = 'none';
+      document.getElementById('join-success').classList.add('show');
+    }, 900);
+  }
+</script>
+
+</body>
+</html>
